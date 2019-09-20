@@ -36,6 +36,18 @@ def test_get_all_content_words_in_doc():
 def test_compute_tf():
 
 def test_compute_average_probability_of_words():
+  summarizer = _build_summarizer(EMPTY_STOP_WORDS)
+  word_freq = {"one": 1/6, "two": 2/6, "three": 3/6}
+  s0 = []
+  s1 = ["one"]
+  s2 = ["two", "three"]
+  s3 = ["two", "three", "three"]
+  EPS = 0.0001
+  
+  assert summarizer._compute_average_probability_of_words(word_freq, s0) == pytest.approx(0, EPS)
+  assert summarizer._compute_average_probability_of_words(word_freq, s1) == pytest.approx(1/6, EPS)
+  assert summarizer._compute_average_probability_of_words(word_freq, s2) == pytest.approx(5/12, EPS)
+  assert summarizer._compute_average_probability_of_words(word_freq, s3) == pytest.approx(8/18, EPS)
 
 def test_compute_ratings():
   summarizer = bild_summarizer(EMPTY_STOP_WORDS)
