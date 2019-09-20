@@ -38,7 +38,27 @@ def test_compute_tf():
 def test_compute_average_probability_of_words():
 
 def test_compute_ratings():
-
+  summarizer = bild_summarizer(EMPTY_STOP_WORDS)
+  
+  s0 = Sentence("Dog cat fish.", Tokenizer("english"))
+  s1 = Sentence("Dog cat camel.", Tokenizer("english"))
+  s2 = Sentence("Fish frog horse.", Tokenizer("english"))
+  document = build_document([s0, s1, s2])
+  
+  ratings = summarizer._compute_ratings(document.sentences)
+  assert ratings[s0] == 0
+  assert ratings[s1] == -2
+  assert ratings[s2] == -1
+  
+  s0 = Sentence("one two three", Tokenizer("english"))
+  s1 = Sentence("one two four", Tokenizer("english"))
+  s2 = Sentence("three five six", Tokenizer("english"))
+  document = build_document([s0, s1, s2])
+  
+  ratings = summarizer._compute_ratings(document.sentences)
+  assert ratings[s0] == 0
+  assert ratings[s1] == -2
+  assert ratings[s2] == -1
 ```
 
 ```
